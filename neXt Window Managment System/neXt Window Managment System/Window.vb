@@ -15,6 +15,8 @@ Public Class Window
     Public _isMaxed As Boolean = False
     Private _isAnimating As Boolean = False
     Private _forcedEdges As Boolean = False
+    Private _xendesk As Boolean = False
+    Private _isToolWindow As Boolean = False
     Private _cornerRadius As Integer = 0
 
     Private _stripTop As Integer = 0
@@ -44,10 +46,16 @@ Public Class Window
             Dim fDock = Path.Combine(baseDir, "dock_size.val")
             Dim fDockLoc = Path.Combine(baseDir, "dock_location.word")
 
-            If File.Exists(fStrip) Then Integer.TryParse(File.ReadAllText(fStrip).Trim(), _stripTop)
-            If File.Exists(fDock) Then Integer.TryParse(File.ReadAllText(fDock).Trim(), _dockSize)
-            If File.Exists(fDockLoc) Then
-                _dockLocation = File.ReadAllText(fDockLoc).Trim().ToLower()
+            If _xendesk Then
+                If File.Exists(fStrip) Then Integer.TryParse(File.ReadAllText(fStrip).Trim(), _stripTop)
+                If File.Exists(fDock) Then Integer.TryParse(File.ReadAllText(fDock).Trim(), _dockSize)
+                If File.Exists(fDockLoc) Then
+                    _dockLocation = File.ReadAllText(fDockLoc).Trim().ToLower()
+                End If
+            Else
+                _stripTop = 0
+                _dockSize = 0
+                _dockLocation = "bottom"
             End If
         Catch : End Try
     End Sub
@@ -91,6 +99,17 @@ Public Class Window
         _forcedEdges = enable
     End Sub
 
+    ' - Tool Window Mode
+    Public Sub SetToolWindowMode(enable As Boolean)
+        _isToolWindow = enable
+    End Sub
+
+    ' - XenDesk compatibility
+
+    Public Sub SetXenDeskMode(enable As Boolean)
+        _xendesk = enable
+    End Sub
+
     Private Sub OnLocationChanged(sender As Object, e As EventArgs)
         If _forcedEdges AndAlso Not _isAnimating AndAlso Not _isMaxed Then
             Dim scr = Screen.FromControl(_parentForm).WorkingArea
@@ -123,57 +142,75 @@ Public Class Window
 
     ' - Snap Method
     Public Sub MaximizeFull()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X, area.Y, area.Width, area.Height)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X, area.Y, area.Width, area.Height)
+        End If
     End Sub
 
     Public Sub SnapToLeft()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X, area.Y, area.Width \ 2, area.Height)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X, area.Y, area.Width \ 2, area.Height)
+        End If
     End Sub
 
     Public Sub SnapToRight()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X + (area.Width \ 2), area.Y, area.Width \ 2, area.Height)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X + (area.Width \ 2), area.Y, area.Width \ 2, area.Height)
+        End If
     End Sub
 
     Public Sub SnapToBottomHalf()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X, area.Y + (area.Height \ 2), area.Width, area.Height \ 2)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X, area.Y + (area.Height \ 2), area.Width, area.Height \ 2)
+        End If
     End Sub
 
     Public Sub SnapToLeftTop()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X, area.Y, area.Width \ 2, area.Height \ 2)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X, area.Y, area.Width \ 2, area.Height \ 2)
+        End If
     End Sub
 
     Public Sub SnapToRightTop()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X + (area.Width \ 2), area.Y, area.Width \ 2, area.Height \ 2)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X + (area.Width \ 2), area.Y, area.Width \ 2, area.Height \ 2)
+        End If
     End Sub
 
     Public Sub SnapToLeftBottom()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X, area.Y + (area.Height \ 2), area.Width \ 2, area.Height \ 2)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X, area.Y + (area.Height \ 2), area.Width \ 2, area.Height \ 2)
+        End If
     End Sub
 
     Public Sub SnapToRightBottom()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = True
-        AnimateSnap(area.X + (area.Width \ 2), area.Y + (area.Height \ 2), area.Width \ 2, area.Height \ 2)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = True
+            AnimateSnap(area.X + (area.Width \ 2), area.Y + (area.Height \ 2), area.Width \ 2, area.Height \ 2)
+        End If
     End Sub
 
     Public Sub OriginalSize()
-        Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
-        _isMaxed = False
-        AnimateSnap(area.X + (area.Width - DefaultWidth) \ 2, area.Y + 10, DefaultWidth, DefaultHeight)
+        If Not _isToolWindow Then
+            Dim area = GetAvailableArea(Screen.FromPoint(Cursor.Position).WorkingArea)
+            _isMaxed = False
+            AnimateSnap(area.X + (area.Width - DefaultWidth) \ 2, area.Y + 10, DefaultWidth, DefaultHeight)
+        End If
     End Sub
 
     ' - Animation Core
@@ -217,10 +254,12 @@ Public Class Window
     Private Sub OnMouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
             If e.Clicks = 2 Then
-                If _isMaxed Then OriginalSize() Else MaximizeFull()
+                If Not _isToolWindow Then
+                    If _isMaxed Then OriginalSize() Else MaximizeFull()
+                End If
                 Return
-            End If
-            If _isMaxed Then
+                End If
+                If _isMaxed Then
                 _isMaxed = False
                 _parentForm.Size = New Size(DefaultWidth, DefaultHeight)
                 _parentForm.Location = New Point(Cursor.Position.X - (DefaultWidth \ 2), Cursor.Position.Y - e.Y)

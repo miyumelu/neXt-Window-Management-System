@@ -22,8 +22,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -55,7 +59,7 @@
               "RelativeDocumentMoniker": "neXt Window Managment System\\Window.vb",
               "ToolTip": "C:\\Users\\deniz\\Documents\\GitHub\\neXt-Window-Management-System\\neXt Window Managment System\\neXt Window Managment System\\Window.vb",
               "RelativeToolTip": "neXt Window Managment System\\Window.vb",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAIwBQAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAYwFkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
               "WhenOpened": "2025-12-23T22:37:59.702Z",
               "EditorCaption": ""
