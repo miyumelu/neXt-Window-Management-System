@@ -75,11 +75,11 @@ The system detects the cursor position relative to the screen's working area (re
 
 The XenDesk mode allows it to make the library compatible with the normal Windows shell, because otherwise it was previously only for XenDesk and the scaling did not correspond to that of windows. Currently, an extended "Real-time workspace calculation and scaling" is being created so that the Windows shell elements can also be adopted (design phase).
 
-## Tool Window Mode
+### Tool Window Mode
 
 The Tool Window Mode replaces the Windows Native implementation and allows you to create your own tool Windows with your own design (see [Compressed Map Data Tool](https://github.com/miyumelu/compressed-map-data) tool as an example). The first rollout is here, but it may be that some functions may be missing or incorrect due to the weak architecture.
 
-## Resizable Window
+### Resizable Window
 
 Now you can use the right corner below to change the size.
 
