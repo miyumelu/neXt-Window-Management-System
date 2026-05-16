@@ -1,6 +1,6 @@
 # neXt Window Management System (XWMS)
 
-**neXt Window Management System** is a lightweight, high-performance window management library for VB.NET. It enables borderless WinForms applications to behave like modern Windows 11/10 windows, featuring smooth Aero-Snap functionality, quadrant snapping, and asynchronous resize animations.
+**neXt Window Management System** is a lightweight, high-performance window management library for VB.NET. It enables borderless WinForms applications to behave like modern Windows 11/10 windows, featuring Aero-Snap functionality, quadrant snapping, and asynchronous resize animations.
 
 ---
 
@@ -17,7 +17,7 @@
 ## Integration Guide
 
 ### 1. Add Reference
-Simply add the `neXt Window Management System` DLL as a reference to your project solution.
+Simply add the `neXt Window Managment System` DLL as a reference to your project solution.
 
 ### 2. Setup
 To use the system, you initialize the manager within your Form and register the specific controls that should handle the dragging and snapping logic. 
@@ -71,13 +71,21 @@ The system detects the cursor position relative to the screen's working area (re
 
 ## Current Updates
 
+### XenDesk Mode
+
+The XenDesk mode allows it to make the library compatible with the normal Windows shell, because otherwise it was previously only for XenDesk and the scaling did not correspond to that of windows. Currently, an extended "Real-time workspace calculation and scaling" is being created so that the Windows shell elements can also be adopted (design phase).
+
+## Tool Window Mode
+
+The Tool Window Mode replaces the Windows Native implementation and allows you to create your own tool Windows with your own design (see [Compressed Map Data Tool](https://github.com/miyumelu/compressed-map-data) tool as an example). The first rollout is here, but it may be that some functions may be missing or incorrect due to the weak architecture.
+
+## Resizable Window
+
+Now you can use the right corner below to change the size.
+
 ### Forced Edges
 
 The function has been installed, but the option to turn it off is still missing. This one will come soon.
-
-### Curved Corners and Sizable Windows
-
-This function has now been introduced.
 
 ### Dictionary Communication Layer
 
@@ -85,29 +93,37 @@ With newer features, there are also changeable settings that need to be secured 
 
 **Information**: The Dictionary Communication Layer is not a separate library but an in-house production for each library. More information about DCL can be found in the MaidNVI book.
 
+## Issues
+
+- I am aware that because of an exception, the XWMS can result in a crash of an app or a Black Screen of Death. I am currently trying to trace back the issue. For now, using it with .NET 9.0 or older seems to be the only fix.
+
+- I realized that late, but the library name is broken. Managment instead of Management. I forgot an E... I'll try to rebuild it with a corrected name (or just delay it to the creation of a newer version of it)
+
 ## Rebuild
 
 A new construction of the library is planned.
+
+Each library is now merged with Melumetronics to form a SLCI (Simplified Library Collection Interface). MaidNVI is therefore only for legacy systems.
 
 ---
 
 ##  Example Usage
 
     Imports System.Drawing
+    Imports neXt_Window_Managment_System
 
     Public Class MainForm
         Private xwms As Window
         
         Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             xwms = New Window(Me)
-        
-            If drag_panel IsNot Nothing Then
-                xwms.AddControl(drag_panel)
-            End If
-
-            If name_label IsNot Nothing Then
-                xwms.AddControl(name_label)
-            End If
+            xwms.AddControl(drag_panel)
+            xwms.AddControl(name_label)
+            xmws.SetToolWindowMode(False)
+            xmws.SetXenDeskMode(False)
+            xmws.ForcedEdges(True)
+            xmws.Roundedcorners(20)
+            xwns.ResizerResizable()
         End Sub
         
         Private Sub btnMaximize_Click(sender As Object, e As EventArgs) Handles btnMaximize.Click
